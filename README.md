@@ -243,7 +243,8 @@ Sri_Lanka_NPL_Risk_Prediction/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Sri-Lanka-NPL-Risk-Prediction.git
+git clone https://github.com/Randima-Lahiru/Sri-Lanka-NPL-Risk-Prediction.git
+
 ```
 
 Move into the project folder:
