@@ -230,8 +230,8 @@ with comparison_tab:
     st.header("Model Comparison")
 
     st.write(
-        "Comparison of Logistic Regression, "
-        "Random Forest and XGBoost."
+        "Comparison of Random Forest, "
+        "XGBoost and AdaBoost."
     )
 
     st.dataframe(

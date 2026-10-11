@@ -201,9 +201,9 @@ The model then produces the predicted loan class and probability estimates.
 
 Displays the performance comparison between:
 
-- Logistic Regression
 - Random Forest
 - XGBoost
+- AdaBoost
 
 ### Feature Importance
 
@@ -334,38 +334,11 @@ The probability values should be treated as model-based risk estimates rather th
 
 The three models showed different strengths:
 
-- Logistic Regression achieved the highest Recall.
-- XGBoost achieved the highest Accuracy and Precision.
-- Random Forest achieved the highest F1 Score and ROC-AUC.
+- AdaBoost achieved the highest Accuracy and ROC-AUC, but its Recall for Non-Performing Loans was very low.
+- XGBoost achieved higher Accuracy than Random Forest, but its Recall was lower.
+- Random Forest achieved the highest F1 Score and the highest Recall among the three models while maintaining a strong ROC-AUC score.
 
 Random Forest was selected because it provided the best overall balance for this NPL risk prediction problem.
 
 ---
 
-## Conclusion
-
-This project demonstrates a complete machine learning workflow for Non-Performing Loan risk prediction using Sri Lankan banking data.
-
-Three different machine learning approaches were compared:
-
-- Logistic Regression as a linear baseline model
-- Random Forest as a bagging-based ensemble model
-- XGBoost as a boosting-based ensemble model
-
-Random Forest was selected as the final model based on the final evaluation results.
-
-The selected model was saved and integrated into a Streamlit dashboard that allows users to enter loan and customer information and obtain a model-based NPL risk prediction.
-
-The project demonstrates:
-
-- Data exploration
-- Data preprocessing
-- Class imbalance handling
-- Model training
-- Hyperparameter tuning
-- Model comparison
-- Model evaluation
-- Feature importance analysis
-- New record inference
-- Model persistence
-- Simple Streamlit deployment
