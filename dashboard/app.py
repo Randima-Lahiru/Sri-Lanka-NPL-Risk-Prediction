@@ -275,11 +275,6 @@ with prediction_tab:
             )
 
 
-        st.info(
-            "The probability values are model estimates. "
-            "They are intended for relative risk interpretation "
-            "and are not guaranteed real-world default probabilities."
-        )
 
 
 # ===================================================
@@ -408,9 +403,4 @@ with importance_tab:
     )
 
 
-    st.info(
-        "Feature importance indicates how strongly each feature "
-        "contributes to the Random Forest model overall. "
-        "The notebook also contains SHAP analysis for deeper "
-        "model explainability."
-    )
+   
