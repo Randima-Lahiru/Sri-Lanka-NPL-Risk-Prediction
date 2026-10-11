@@ -4,13 +4,13 @@
 
 This project develops a machine learning-based system for predicting Non-Performing Loan (NPL) risk using Sri Lankan banking data.
 
-The project compares three machine learning classification models:
+The project compares three ensemble machine learning classification models:
 
-- Logistic Regression
 - Random Forest
 - XGBoost
+- AdaBoost
 
-The models are evaluated using multiple classification metrics, and the best-performing model is used in a Streamlit dashboard for loan risk inference.
+The models are evaluated using multiple classification metrics, and the best-performing model for the NPL risk objective is used in a Streamlit dashboard for loan risk inference.
 
 ---
 
@@ -23,7 +23,7 @@ The objective of this project is to classify a loan as:
 
 This is a binary classification problem.
 
-The aim is to identify potentially risky loans while considering the effect of false negatives and false positives.
+The aim is to identify potentially risky loans while considering the impact of false negatives and false positives.
 
 ---
 
@@ -62,7 +62,7 @@ It was converted into numerical form:
 
 The dataset is imbalanced, with fewer Non-Performing Loan records than Performing Loan records.
 
-Because of this, evaluation does not rely only on Accuracy.
+Because of this, model evaluation does not rely only on Accuracy.
 
 ---
 
@@ -82,19 +82,13 @@ The data was divided into:
 - 15% Validation
 - 15% Testing
 
-Stratification was used to maintain a similar class distribution in each dataset.
+Stratification was used to maintain a similar class distribution in each dataset split.
 
 ---
 
 ## Models
 
-Three classification models were developed.
-
-### Logistic Regression
-
-Logistic Regression was used as an interpretable baseline model.
-
-Because the dataset is imbalanced, balanced class weights were used.
+Three ensemble classification models were developed and compared.
 
 ### Random Forest
 
@@ -111,7 +105,7 @@ were configured and evaluated.
 
 ### XGBoost
 
-XGBoost was used as a boosting-based ensemble model.
+XGBoost was used as a gradient boosting-based ensemble model.
 
 Important parameters included:
 
@@ -121,6 +115,17 @@ Important parameters included:
 - Subsample
 - Column sample
 - Positive class weight
+
+### AdaBoost
+
+AdaBoost was used as an adaptive boosting ensemble model.
+
+It builds a sequence of weak learners, where later learners give more attention to observations that were incorrectly classified by previous learners.
+
+Important parameters included:
+
+- Number of estimators
+- Learning rate
 
 ---
 
@@ -138,17 +143,23 @@ Final test results:
 
 | Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
 |---|---:|---:|---:|---:|---:|
-| Logistic Regression | 0.7786 | 0.3214 | 0.9000 | 0.4737 | 0.9065 |
 | Random Forest | 0.8266 | 0.3651 | 0.7667 | 0.4946 | 0.9112 |
 | XGBoost | 0.8782 | 0.4516 | 0.4667 | 0.4590 | 0.8700 |
+| AdaBoost | 0.9004 | 1.0000 | 0.1000 | 0.1818 | 0.9142 |
 
-Random Forest was selected as the final model because it achieved the highest F1 Score and ROC-AUC while maintaining relatively strong Recall.
+Although AdaBoost achieved the highest Accuracy and ROC-AUC, its Recall for Non-Performing Loans was very low.
+
+Random Forest achieved the highest Recall and F1 Score among the three models while maintaining a strong ROC-AUC score.
+
+For this NPL risk prediction problem, identifying actual Non-Performing Loans is important. Therefore, Random Forest was selected as the final model because it provided the best overall balance between Recall, F1 Score, and overall discrimination performance.
 
 ---
 
 ## Feature Importance
 
-The Random Forest feature importance analysis showed that CRIB-related features were the strongest predictors.
+The selected Random Forest model was analysed using feature importance.
+
+The analysis showed that CRIB-related features were among the strongest predictors.
 
 Other important variables included:
 
@@ -161,6 +172,22 @@ An interesting observation was that income did not show a simple inverse relatio
 In the dataset, higher-income groups did not always have lower NPL rates.
 
 This demonstrates that loan risk depends on combinations of multiple variables rather than income alone.
+
+---
+
+## Model Explainability
+
+The selected Random Forest model was further interpreted using SHAP analysis.
+
+SHAP was used to explain how individual features influence the model predictions.
+
+The explainability analysis includes:
+
+- SHAP summary plot
+- SHAP feature importance plot
+- Individual prediction explanation using a SHAP waterfall plot
+
+This provides additional transparency into how different customer and loan features influence Non-Performing Loan predictions.
 
 ---
 
@@ -209,6 +236,8 @@ Displays the performance comparison between:
 
 Displays the most influential features used by the selected Random Forest model.
 
+The detailed SHAP explainability analysis is included in the notebook.
+
 ---
 
 ## Project Structure
@@ -244,7 +273,6 @@ Sri_Lanka_NPL_Risk_Prediction/
 
 ```bash
 git clone https://github.com/Randima-Lahiru/Sri-Lanka-NPL-Risk-Prediction.git
-
 ```
 
 Move into the project folder:
@@ -292,6 +320,16 @@ joblib==1.6.0
 xgboost==3.4.1
 ```
 
+The project also uses:
+
+```text
+streamlit
+numpy
+matplotlib
+openpyxl
+shap
+```
+
 Using a different scikit-learn version may cause compatibility issues when loading the saved model.
 
 ---
@@ -336,9 +374,41 @@ The three models showed different strengths:
 
 - AdaBoost achieved the highest Accuracy and ROC-AUC, but its Recall for Non-Performing Loans was very low.
 - XGBoost achieved higher Accuracy than Random Forest, but its Recall was lower.
-- Random Forest achieved the highest F1 Score and the highest Recall among the three models while maintaining a strong ROC-AUC score.
+- Random Forest achieved the highest Recall and F1 Score among the three models while maintaining a strong ROC-AUC score.
 
 Random Forest was selected because it provided the best overall balance for this NPL risk prediction problem.
 
 ---
 
+## Conclusion
+
+This project developed a machine learning solution for predicting Non-Performing Loan risk using Sri Lankan banking data.
+
+Three ensemble learning models were compared:
+
+- Random Forest
+- XGBoost
+- AdaBoost
+
+The models were evaluated using Accuracy, Precision, Recall, F1 Score, and ROC-AUC.
+
+Although AdaBoost achieved the highest Accuracy and ROC-AUC, its Recall for Non-Performing Loans was very low. XGBoost achieved strong Accuracy but lower Recall than Random Forest.
+
+Random Forest achieved the highest Recall and F1 Score while maintaining a strong ROC-AUC score. Therefore, Random Forest was selected as the final model.
+
+Feature Importance and SHAP analysis were used to interpret the model predictions. The selected model was also integrated into a Streamlit dashboard for new-loan inference.
+
+The project demonstrates a complete machine learning workflow including:
+
+- Local problem identification
+- Data exploration
+- Data preprocessing
+- Ensemble model development
+- Hyperparameter tuning
+- Model comparison
+- Model evaluation
+- Feature importance analysis
+- SHAP explainability
+- New-record inference
+- Model persistence
+- Streamlit dashboard integration
